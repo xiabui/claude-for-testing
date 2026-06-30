@@ -4,27 +4,34 @@ This project uses **Claude Code** to assist with writing and maintaining C# + Pl
 
 ---
 
-## 1. Keep Claude config local (do NOT commit)
+## 1. Keep Claude config global (do NOT commit)
 
 `CLAUDE.md` and the `.claude/` directory are **local-only** in this project — they are personal/IDE configuration, not shared source. Keep them out of version control.
 
-### Add to `.gitignore`
+### Add to `.gitignore` global
 
 ```gitignore
-# Claude Code — local only, do not commit
+# Tạo file (dùng ~/.gitignore_global theo chuẩn phổ biến)
+touch ~/.gitignore_global
+
+# Khai báo cho Git dùng file này global
+git config --global core.excludesfile ~/.gitignore_global
+
+cat >> ~/.gitignore_global << 'EOF'
+
+# Claude Code — local only, never commit (global)
 .claude/
 CLAUDE.md
 CLAUDE.local.md
+EOF
 ```
 
-### If they were already committed
-
-`.gitignore` does not affect files Git is already tracking. Stop tracking them while keeping the local copies:
-
+Check
 ```bash
-git rm -r --cached .claude CLAUDE.md
-git commit -m "chore: stop tracking local Claude config"
+git config --global core.excludesfile        # phải in ra đường dẫn ~/.gitignore_global
+git check-ignore -v CLAUDE.md                 # chạy trong 1 repo bất kỳ để xác nhận
 ```
+
 
 The files stay on your disk; Git just no longer tracks them.
 
